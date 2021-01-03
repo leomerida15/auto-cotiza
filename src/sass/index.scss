@@ -1,0 +1,72 @@
+@import './configs/ed-grid';
+@import './configs/Materialize-sass/index.scss';
+@import '~vue-select/src/scss/vue-select.scss';
+
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	box-shadow: none;
+	border-radius: 25px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #cfd8dc;
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #90a4ae;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=Homemade+Apple&display=swap');
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span {
+	font-family: 'Baloo Tamma 2', cursive;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+html {
+	overflow-y: scroll;
+}
+
+.chis-table {
+	overflow-x: scroll;
+	height: 4rem;
+	width: 10rem;
+}
+@media only screen and (min-width: 601px) {
+	.chis-table {
+		overflow-x: scroll;
+		height: 4rem;
+		width: 12rem;
+	}
+}
+@media only screen and (min-width: 993px) {
+	.chis-table {
+		overflow-x: scroll;
+		height: 3.6rem;
+		width: 12rem;
+		margin-right: -6rem;
+	}
+}
+
+.chis {
+	overflow-y: scroll;
+	height: 2.4rem;
+}
