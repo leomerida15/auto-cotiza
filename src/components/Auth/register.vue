@@ -9,12 +9,12 @@
 					<v-icon :name="face" scale="3.5" class="black-text" @mouseover="face = face_one" @mouseleave="face = face_two" />
 				</div>
 				<span class="s-cols-2">Registro</span>
-
 				<div class="s-left">
 					<a
 						@mouseover="(size.g = ' btn-large'), (face = 'laugh-wink')"
 						@mouseleave="(size.g = ' btn-small'), (face = face_two)"
 						:class="['btn-floating waves-effect waves-light transparent', size.g]"
+						@click="social_auth('Gmail')"
 					>
 						<img src="@/assets/img/redes/google.svg" alt="" />
 					</a>
@@ -24,6 +24,7 @@
 						@mouseover="(size.f = ' btn-large'), (face = 'laugh-wink')"
 						@mouseleave="(size.f = ' btn-small'), (face = face_two)"
 						:class="['btn-floating waves-effect waves-light transparent', size.f]"
+						@click="social_auth('face')"
 					>
 						<img src="@/assets/img/redes/facebook.svg" alt="" />
 					</a>
@@ -56,8 +57,11 @@
 </template>
 
 <script>
+	// modules
 	import { mapState, mapMutations } from 'vuex';
 	import axios from 'axios';
+	import firebase from 'firebase';
+
 	// components
 	import Notify from '../notify';
 	export default {
@@ -93,6 +97,45 @@
 				} catch (message) {
 					// error catch
 					this.notify = { state: 'err', message };
+				}
+			},
+			async social_auth(serv) {
+				try {
+					let provider;
+					switch (serv) {
+						case 'Gmail':
+							provider = new firebase.auth.GoogleAuthProvider();
+							break;
+						case 'face':
+							provider = new firebase.auth.FacebookAuthProvider();
+							break;
+					}
+
+					const resp_auth = await firebase.auth().signInWithPopup(provider);
+
+					const { isNewUser } = resp_auth.additionalUserInfo;
+					const { email } = firebase.auth().currentUser;
+
+					if (firebase.auth().currentUser) {
+						const data = { isNewUser, email };
+
+						console.log(data);
+
+						const resp = await axios.post(this.api + '/social', data);
+
+						// filter the respues
+						const { message, info } = resp.data;
+
+						localStorage.setItem('token', info.token);
+
+						// notify of the proces
+						this.notify = { state: 'ok', message: 'OK' };
+
+						// rediret
+						this.$router.push('/Admin/home');
+					} else throw 'err';
+				} catch (err) {
+					this.notify = { state: 'err', message: 'err' };
 				}
 			},
 			clear() {

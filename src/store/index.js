@@ -5,13 +5,14 @@ import axios from 'axios';
 // modules
 import sections from './modules/sections';
 import products from './modules/products';
+import { production } from './global';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
 		type_auth: 'login',
-		api: 'http://localhost:5000',
+		api: production ? 'https://auto-cotiza-muestra.herokuapp.com' : 'http://localhost:5000',
 		pays: {
 			total: 0,
 			sistems: [],

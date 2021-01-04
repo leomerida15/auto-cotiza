@@ -1,8 +1,13 @@
 import axios from 'axios';
+import { production } from '../global';
 
 export default {
 	namespaced: true,
-	state: { sections: [], api: 'http://localhost:5000', edit: false },
+	state: {
+		sections: [],
+		api: production ? 'https://auto-cotiza-muestra.herokuapp.com' : 'http://localhost:5000',
+		edit: false,
+	},
 	mutations: {
 		define_sections: (state, info) => (state.sections = info),
 		push_sections: (state, info) => state.sections.push(info),
