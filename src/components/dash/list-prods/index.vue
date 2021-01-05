@@ -1,12 +1,14 @@
 <template>
 	<div class="list-sects">
-		<div class="ed-grid s-grid-2 m-grid-12">
-			<div class="m-x-11">
+		<div class="ed-grid s-grid-6 m-grid-12">
+			<h2 class="top-name">Productos</h2>
+
+			<div class="s-x-5 m-x-11">
 				<a @click="see = 'card'" class="btn-floating btn-large waves-effect waves-light btn-flat">
 					<i class="black-text material-icons">grid_on</i>
 				</a>
 			</div>
-			<div class="m-x-12">
+			<div class="s-x-6 m-x-12">
 				<a @click="see = 'list'" class="btn-floating btn-large waves-effect waves-light btn-flat">
 					<i class="black-text material-icons">format_list_numbered</i>
 				</a>
@@ -76,4 +78,8 @@
 	};
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+	.top-name {
+		margin: 0;
+	}
+</style>

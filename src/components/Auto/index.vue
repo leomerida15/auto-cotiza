@@ -1,6 +1,7 @@
 <template>
 	<section class="index">
 		<div class="ed-grid s-grid-1 m-grid-6">
+			<div class="m-cols-6"><h6>Sections</h6></div>
 			<div class="m-cols-6">
 				<div class="">
 					<Chip v-for="(section, i) in sections" :key="i" :id_section="section.id" :i="i" :name="section.name" />
@@ -9,6 +10,8 @@
 			<div class="m-cols-4">
 				<div class="card">
 					<div class="card-content ed-grid s-grid-2 m-grid-3">
+						<div class="s-cols-2 m-cols-3"><h6>Producots</h6></div>
+
 						<Card
 							v-for="(product, i) in products"
 							:key="i"

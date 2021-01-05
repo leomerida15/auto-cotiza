@@ -9,7 +9,6 @@
 	// @ is an alias to /src
 	//components
 	import NavBar from '@/components/NavBar/';
-
 	// Modules
 
 	export default {
