@@ -52,6 +52,7 @@
 				:price="section.price"
 				:name_section="section.name"
 				:products="section.products"
+				:path="section.path"
 			/>
 		</div>
 	</section>

@@ -7,6 +7,7 @@
 
 <script>
 	// modules
+	import { mapActions } from 'vuex';
 	// components
 	import listSects from '@/components/dash/list-sects/';
 	import floatBtn from '@/components/float-btn/';
@@ -15,11 +16,13 @@
 		name: 'section',
 		props: [],
 		components: { listSects, floatBtn },
-		mounted() {},
+		mounted() {
+			this.get_sections();
+		},
 		data() {
 			return {};
 		},
-		methods: {},
+		methods: { ...mapActions('sections', ['get_sections']) },
 		computed: {},
 	};
 </script>

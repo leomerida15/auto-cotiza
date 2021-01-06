@@ -1,31 +1,44 @@
 <template>
 	<section class="index">
 		<div class="ed-grid s-grid-1 m-grid-6">
-			<div class="m-cols-6"><h6>Sections</h6></div>
-			<div class="m-cols-6">
-				<div class="">
-					<Chip v-for="(section, i) in sections" :key="i" :id_section="section.id" :i="i" :name="section.name" />
-				</div>
-			</div>
 			<div class="m-cols-4">
-				<div class="card">
-					<div class="card-content ed-grid s-grid-2 m-grid-3">
-						<div class="s-cols-2 m-cols-3"><h6>Producots</h6></div>
+				<div class="ed-grid s-grid-1 m-grid-3">
+					<ul class="tabs tabs-fixed-width tab-demo z-depth-1 ">
+						<li class="tab"><a class="active" href="#test1">Secciones</a></li>
+						<li class="tab"><a href="#test2">Productos</a></li>
+					</ul>
+				</div>
 
-						<Card
-							v-for="(product, i) in products"
-							:key="i"
-							:i="i"
-							:desc="product.desc"
-							:name="product.name"
-							:path="product.path"
-						/>
+				<div class="card top-0">
+					<div class="card-content ed-grid s-grid-2 m-grid-3">
+						<div id="test1">
+							<cards-sects
+								v-for="(section, i) in sections"
+								:key="i"
+								:i="i"
+								:desc="section.desc"
+								:name="section.name"
+								:path="section.path"
+							/>
+						</div>
+						<div id="test2">
+							<cards-prods
+								v-for="(product, i) in lists"
+								:key="i"
+								:i="i"
+								:desc="product.desc"
+								:name="product.name"
+								:path="product.path"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="m-cols-2">
 				<div class="card">
-					<div class="card-content"><Pay /></div>
+					<div class="card-content">
+						<Pay />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -34,28 +47,35 @@
 
 <script>
 	// components
-	import Card from './cards';
-	import Chip from './chip';
+	import CardsProds from './cards-prods';
+	import CardsSects from './cards-sects';
 	import Pay from './pay';
 	// modules
 	import Axios from 'axios';
-	import { mapState } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
+	import M from 'materialize-css';
+
 	export default {
 		name: 'Auto',
 		props: [],
-		components: { Card, Chip, Pay },
-		async mounted() {},
+		components: { CardsProds, CardsSects, Pay },
+		async mounted() {
+			const el = document.querySelectorAll('.tabs');
+			M.Tabs.init(el);
+		},
 		data() {
 			return {
 				data_cards: [],
+				active: true,
 			};
 		},
 		methods: {},
-		computed: { ...mapState('sections', ['sections']), ...mapState('products', ['products']) },
+		computed: { ...mapState('sections', ['sections']), ...mapState(['lists']) },
 	};
 </script>
 
 <style scoped lang="scss">
-	// .index {
-	// }
+	.top-0 {
+		margin-top: 0;
+	}
 </style>

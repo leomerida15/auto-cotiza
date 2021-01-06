@@ -18,6 +18,8 @@ export default new Vuex.Store({
 			sistems: [],
 			functions: [],
 		},
+		relations: [],
+		lists: [],
 	},
 	mutations: {
 		auth_inverse(state, type) {
@@ -39,6 +41,18 @@ export default new Vuex.Store({
 			sistems.forEach((sistem, i) => {
 				state.pays.total = state.pays.total + sistem.price;
 			});
+
+			const { id } = body;
+			state.relations.forEach((relation) => {
+				const { id_section, id_product } = relation;
+				if (id === id_section) {
+					state.products.products.forEach((product) => {
+						if (product.id === id_product) {
+							state.lists.push(product);
+						}
+					});
+				}
+			});
 		},
 		delete_sistem(state, id) {
 			const { sistems, functions } = state.pays;
@@ -54,9 +68,37 @@ export default new Vuex.Store({
 				}
 			}
 
-			state.pays.total = 0;
-			sistems.forEach((sistem, i) => {
-				state.pays.total = state.pays.total + sistem.price;
+			function delete_function(id) {
+				for (let i = 0; i < functions.length; i++) {
+					const function_ = functions[i];
+
+					if (function_.id === id) {
+						const { sistems } = state.pays;
+
+						sistems.forEach((sistem, j) => {
+							state.pays.sistems[j].price = sistems[j].price - function_.price;
+						});
+
+						state.pays.functions.splice(i, 1);
+					}
+				}
+
+				state.pays.total = 0;
+				sistems.forEach((sistem, i) => {
+					state.pays.total = state.pays.total + sistem.price;
+				});
+			}
+
+			state.relations.forEach((relation) => {
+				const { id_section, id_product } = relation;
+				if (id === id_section) {
+					state.products.products.forEach((product, j) => {
+						if (product.id === id_product) {
+							delete_function(product.id);
+							state.lists.splice(j, 1);
+						}
+					});
+				}
 			});
 
 			return true;
@@ -99,6 +141,9 @@ export default new Vuex.Store({
 
 			return true;
 		},
+		define_relations: (state, info) => {
+			state.relations = info;
+		},
 	},
 	actions: {
 		clear_pays({ commit, state }) {
@@ -107,6 +152,15 @@ export default new Vuex.Store({
 			state.pays.sistems.forEach(async (sistem) => commit('delete_sistem', sistem.id));
 
 			return true;
+		},
+		async get_relations({ commit, state }) {
+			try {
+				const resp = await axios.get(state.api + '/relations');
+
+				commit('define_relations', resp.data.info);
+			} catch (err) {
+				console.error(err);
+			}
 		},
 	},
 	modules: { sections, products },

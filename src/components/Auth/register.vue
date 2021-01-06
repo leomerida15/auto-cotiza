@@ -87,13 +87,20 @@
 				try {
 					// obj For petition
 					const data = { email: this.email, password: this.password, re_password: this.password_confi };
+
 					// petition
 					const resp = await axios.post(this.api + '/register', data);
+
 					// filter the respues
 					const { state, message } = resp.data;
 					if (!state) throw message;
+
 					// notify of the proces
 					this.notify = { state: 'ok', message };
+
+					setTimeout(() => (this.notify = { state: '', message: '' }), 500);
+
+					setTimeout(() => this.auth_inverse('login'), 1000);
 				} catch (message) {
 					// error catch
 					this.notify = { state: 'err', message };

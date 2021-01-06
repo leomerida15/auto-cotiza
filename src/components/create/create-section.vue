@@ -19,10 +19,24 @@
 					<label for="price_for_create">Precio</label>
 				</div>
 
-				<button :disabled="valid_form" class="btn waves-effect waves-light" type="submit" name="action">
-					Crear
-					<i class="material-icons right">send</i>
-				</button>
+				<div class="ed-container">
+					<div class="ed-item s-1-3">
+						<button :disabled="valid_form" class="btn waves-effect waves-light" type="submit" name="action">
+							Crear
+							<i class="material-icons right">send</i>
+						</button>
+					</div>
+					<div class="ed-item s-1-3">
+						<div class="file-field input-field waves-effect waves-light btn">
+							Imagen
+							<input type="file" ref="file" @change="previewImage" accept="image/*" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card z-depth-3">
+				<img :src="imageData" />
 			</div>
 		</form>
 	</section>
@@ -44,22 +58,41 @@
 			return {
 				name: '',
 				price: '',
+				files: {},
+				files_valid: false,
+				imageData: '',
 				notify: { state: '', message: '' },
 			};
 		},
 		methods: {
 			...mapActions('sections', ['create_section']),
+			previewImage: function(event) {
+				const input = event.target;
+				this.files = event.target.files[0];
+				this.files_valid = true;
+				if (input.files && input.files[0]) {
+					const reader = new FileReader();
+
+					reader.onload = (e) => (this.imageData = e.target.result);
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			},
 			async create() {
 				try {
-					const body = {
-						name: this.name,
-						price: this.price,
-					};
+					const body = new FormData();
+
+					body.append('name', this.name);
+					body.append('price', this.price);
+					body.append('files', this.files);
 
 					const resp = await this.create_section(body);
 
 					this.name = '';
 					this.price = '';
+					this.files = {};
+					this.imageData = '';
+					this.files_valid = false;
 					this.notify = { state: 'ok', message: 'Su seccion fue creada con Exito' };
 				} catch (err) {
 					this.notify = { state: 'err', message: 'Su seccion No fue creada' };
@@ -76,13 +109,15 @@
 				let valid = 0;
 				if (this.name) valid++;
 				if (this.price) valid++;
-				return valid === 2 ? false : true;
+				if (this.files_valid) valid++;
+				return valid === 3 ? false : true;
 			},
 		},
 	};
 </script>
 
 <style scoped lang="scss">
-	// .create {
-	// }
+	.file-field {
+		margin: 0;
+	}
 </style>

@@ -6,7 +6,7 @@
 		<div v-if="edit" class="card-content">
 			<span class="card-title">{{ name }}</span>
 			<p>ID: {{ id_product }} || Price: {{ price }}</p>
-			<p>Productos:</p>
+			<p>Secciones:</p>
 			<div class="chis">
 				<div v-for="(section, i) in sections" :key="i" class="chip">
 					{{ section.name }}

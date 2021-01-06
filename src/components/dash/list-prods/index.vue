@@ -24,7 +24,7 @@
 								<th data-field="id">ID</th>
 								<th data-field="name">Nombre</th>
 								<th data-field="price">Precio</th>
-								<th data-field="products">Sections</th>
+								<th data-field="products">Secciones</th>
 								<th data-field="function">Funciones</th>
 							</tr>
 						</thead>

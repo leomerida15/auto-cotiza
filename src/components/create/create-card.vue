@@ -33,13 +33,19 @@
 					</select>
 				</div>
 
-				<button :disabled="valid_form" class="btn waves-effect waves-light" type="submit" name="action">
-					Crear
-					<i class="material-icons right">send</i>
-				</button>
-				<div class="file-field input-field waves-effect waves-light btn">
-					Imagen
-					<input type="file" ref="file" @change="previewImage" accept="image/*" />
+				<div class="ed-container">
+					<div class="ed-item s-1-3">
+						<button :disabled="valid_form" class="btn waves-effect waves-light" type="submit" name="action">
+							Crear
+							<i class="material-icons right">send</i>
+						</button>
+					</div>
+					<div class="ed-item s-1-3">
+						<div class="file-field input-field waves-effect waves-light btn">
+							Imagen
+							<input type="file" ref="file" @change="previewImage" accept="image/*" />
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -79,7 +85,7 @@
 			};
 		},
 		methods: {
-			...mapActions('products', ['create_product', 'get_products']),
+			...mapActions('products', ['create_product']),
 			previewImage: function(event) {
 				const input = event.target;
 				this.files = event.target.files[0];
@@ -102,7 +108,6 @@
 					body.append('sects', this.sects);
 
 					const resp = await this.create_product(body);
-					if (!resp) throw 'err';
 
 					this.name = '';
 					this.price = '';
@@ -114,6 +119,7 @@
 					this.notify = { state: 'ok', message: 'Su Producto fue creada con Exito' };
 				} catch (err) {
 					this.notify = { state: 'err', message: 'Su Producto No fue creada' };
+					console.error(err);
 				}
 			},
 			clear() {
@@ -138,6 +144,9 @@
 
 <style scoped lang="scss">
 	.sub-titel {
+		margin: 0;
+	}
+	.file-field {
 		margin: 0;
 	}
 </style>

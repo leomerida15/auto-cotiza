@@ -7,6 +7,7 @@
 
 <script>
 	// modules
+	import { mapActions } from 'vuex';
 	// components
 	import listProds from '@/components/dash/list-prods/';
 	import floatBtn from '@/components/float-btn/';
@@ -15,11 +16,17 @@
 		name: 'products',
 		props: [],
 		components: { listProds, floatBtn },
-		mounted() {},
+		mounted() {
+			this.get_sections();
+			this.get_products();
+		},
 		data() {
 			return {};
 		},
-		methods: {},
+		methods: {
+			...mapActions('sections', ['get_sections']),
+			...mapActions('products', ['get_products']),
+		},
 		computed: {},
 	};
 </script>

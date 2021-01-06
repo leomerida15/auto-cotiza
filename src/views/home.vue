@@ -14,14 +14,16 @@
 	import Auto from '@/components/Auto/';
 
 	// Modules
-	import { mapState, mapActions } from 'vuex';
+	import { mapActions } from 'vuex';
 	// import M from 'materialize-css'
 
 	export default {
 		name: 'NavBarHome',
 		components: { NavBar, carouselTop, Auto },
-		mounted() {},
-		computed: { ...mapState('sections', ['sections']), ...mapState('products', ['products']) },
-		methods: {},
+		mounted() {
+			this.get_relations();
+		},
+		computed: {},
+		methods: { ...mapActions(['get_relations']) },
 	};
 </script>

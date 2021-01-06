@@ -50,7 +50,7 @@ export default {
 					commit('define_products', info);
 				}
 			} catch (err) {
-				console.err(err);
+				console.error(err);
 			}
 		},
 		async delete_product({ state, commit }, i) {

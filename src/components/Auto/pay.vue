@@ -1,20 +1,6 @@
 <template>
 	<section class="pay">
-		<table>
-			<thead>
-				<tr>
-					<th>Total</th>
-					<th>Pagar</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr>
-					<td>{{ pays.total }}</td>
-					<td><a class="waves-effect waves-light btn ">Pagar</a></td>
-				</tr>
-			</tbody>
-
+		<table class="striped">
 			<thead>
 				<tr>
 					<th>Sistemas</th>
@@ -40,6 +26,21 @@
 				<tr v-for="(function_, i) in pays.functions" :key="i">
 					<td>{{ function_.name }}</td>
 					<td>{{ function_.price }}</td>
+				</tr>
+			</tbody>
+
+			<thead>
+				<tr>
+					<th></th>
+
+					<th>Total</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td><a class="waves-effect waves-light btn ">Pagar</a></td>
+					<td>{{ pays.total }}</td>
 				</tr>
 			</tbody>
 		</table>

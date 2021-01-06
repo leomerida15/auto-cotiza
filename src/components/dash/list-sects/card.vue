@@ -1,5 +1,8 @@
 <template>
 	<div class="card">
+		<div class="card-image">
+			<img :src="path" />
+		</div>
 		<div v-if="edit" class="card-content">
 			<span class="card-title">{{ name_section }}</span>
 			<p>ID: {{ id_section }} || Price: {{ price }}</p>
@@ -51,6 +54,7 @@
 			name_section: { required: true },
 			price: { required: true },
 			products: { type: Array, required: true },
+			path: { type: Array, required: true },
 			i: { type: Number, required: true },
 		},
 		mounted() {
