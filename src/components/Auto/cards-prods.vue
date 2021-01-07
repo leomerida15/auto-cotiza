@@ -2,10 +2,10 @@
 	<div class="card">
 		<div class="card-image">
 			<img :src="path" />
-			<a v-if="!show" @click="check(i)" class="btn-floating halfway-fab waves-effect waves-light red">
+			<a v-if="!show" @click="check(body)" class="btn-floating halfway-fab waves-effect waves-light red">
 				<i class="material-icons">add</i>
 			</a>
-			<a v-if="show" @click="check(i)" class="btn-floating halfway-fab waves-effect waves-light green">
+			<a v-if="show" @click="check(body)" class="btn-floating halfway-fab waves-effect waves-light green">
 				<i class="material-icons">check</i>
 			</a>
 		</div>
@@ -31,7 +31,7 @@
 	import Axios from 'axios';
 	export default {
 		name: 'cards',
-		props: ['name', 'desc', 'i', 'path'],
+		props: ['name', 'desc', 'i', 'path', 'body'],
 		data() {
 			return {
 				show: false,
@@ -40,14 +40,13 @@
 		async mounted() {},
 		methods: {
 			...mapMutations(['add_function', 'delete_function']),
-			check(i) {
+			check(body) {
 				this.show = !this.show;
 
 				if (!this.show) {
-					const { id } = this.products[i];
+					const { id } = body
 					this.delete_function(id);
 				} else {
-					const body = this.products[i];
 					this.add_function(body);
 				}
 			},

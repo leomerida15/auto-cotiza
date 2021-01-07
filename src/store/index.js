@@ -26,79 +26,102 @@ export default new Vuex.Store({
 			state.type_auth = type;
 		},
 		add_sistem(state, body) {
+			// insert nuw sistem
 			state.pays.sistems.push(body);
+			const products = body.products;
 
+			// define index and valid the existen function in the sistem
 			const i = state.pays.sistems.length - 1;
-
 			if (state.pays.functions.length > 0) {
 				state.pays.functions.forEach((function_) => {
-					state.pays.sistems[i].price = state.pays.sistems[i].price + function_.price;
+					if (products.indexOf(function_) != -1) {
+						state.pays.sistems[i].price = state.pays.sistems[i].price + function_.price;
+					}
 				});
 			}
 
+			// define total
 			const { sistems } = state.pays;
 			state.pays.total = 0;
 			sistems.forEach((sistem, i) => {
 				state.pays.total = state.pays.total + sistem.price;
 			});
 
-			const { id } = body;
-			state.relations.forEach((relation) => {
-				const { id_section, id_product } = relation;
-				if (id === id_section) {
-					state.products.products.forEach((product) => {
-						if (product.id === id_product) {
-							state.lists.push(product);
-						}
-					});
-				}
+			// valid and push fuction in the list
+			products.forEach((product) => {
+				const valid = state.lists.filter((list) => (list.id === product.id ? true : false));
+				Promise.all(valid);
+
+				if (valid.length === 0) state.lists.push(product);
 			});
 		},
 		delete_sistem(state, id) {
+			// define vars
 			const { sistems, functions } = state.pays;
+			const products = [];
 
-			for (let i = 0; i < sistems.length; i++) {
-				const sistem = sistems[i];
-
+			// remove the sistem
+			sistems.forEach((sistem, i) => {
 				if (sistem.id === id) {
-					functions.forEach((function_) => {
-						state.pays.sistems[i].price = state.pays.sistems[i].price - function_.price;
-					});
+					sistem.products.forEach((product) => products.push(product));
+
 					state.pays.sistems.splice(i, 1);
 				}
-			}
+			});
 
-			function delete_function(id) {
-				for (let i = 0; i < functions.length; i++) {
-					const function_ = functions[i];
+			// valid and remove the product
+			for (let j = 0; j < products.length; j++) {
+				const product = products[j];
 
-					if (function_.id === id) {
-						const { sistems } = state.pays;
+				// if do not existen sistems
+				if (state.pays.sistems.length === 0) {
+					state.lists = [];
+					state.pays.total = 0;
+					state.pays.functions = [];
+				} else {
+					// if do yes existen sistems
+					sistems.forEach((sistem, i) => {
+						// valid the existence of the product in other sistem
+						const { products } = sistem;
+						const valid_product = [];
 
-						sistems.forEach((sistem, j) => {
-							state.pays.sistems[j].price = sistems[j].price - function_.price;
-						});
+						for (let k = 0; k < products.length; k++) {
+							const e = products[k];
 
-						state.pays.functions.splice(i, 1);
-					}
-				}
+							if (e.id === product.id) {
+								valid_product.push('');
+							}
+						}
 
-				state.pays.total = 0;
-				sistems.forEach((sistem, i) => {
-					state.pays.total = state.pays.total + sistem.price;
-				});
-			}
+						// remove value an data of product inValid
+						if (valid_product.length === 0) {
+							state.lists.forEach((item, k) => {
+								if (item.id === product.id) {
+									for (let i = 0; i < functions.length; i++) {
+										const function_ = functions[i];
 
-			state.relations.forEach((relation) => {
-				const { id_section, id_product } = relation;
-				if (id === id_section) {
-					state.products.products.forEach((product, j) => {
-						if (product.id === id_product) {
-							delete_function(product.id);
-							state.lists.splice(j, 1);
+										if (function_.id === product.id) {
+											const { sistems } = state.pays;
+
+											sistems.forEach((sistem, j) => {
+												state.pays.sistems[j].price = sistems[j].price - function_.price;
+											});
+
+											state.pays.functions.splice(i, 1);
+										}
+									}
+
+									state.lists.splice(k, 1);
+								}
+							});
 						}
 					});
 				}
+			}
+
+			state.pays.total = 0;
+			sistems.forEach((sistem, i) => {
+				state.pays.total = state.pays.total + sistem.price;
 			});
 
 			return true;

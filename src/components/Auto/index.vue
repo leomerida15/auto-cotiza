@@ -10,26 +10,20 @@
 				</div>
 
 				<div class="card top-0">
-					<div class="card-content ed-grid s-grid-2 m-grid-3">
+					<div class="card-content ">
 						<div id="test1">
-							<cards-sects
-								v-for="(section, i) in sections"
-								:key="i"
-								:i="i"
-								:desc="section.desc"
-								:name="section.name"
-								:path="section.path"
-							/>
+							<div class="ed-grid s-grid-2 m-grid-3">
+								<div v-for="(section, i) in sections" :key="i">
+									<cards-sects :i="i" :desc="section.desc" :name="section.name" :path="section.path" />
+								</div>
+							</div>
 						</div>
 						<div id="test2">
-							<cards-prods
-								v-for="(product, i) in lists"
-								:key="i"
-								:i="i"
-								:desc="product.desc"
-								:name="product.name"
-								:path="product.path"
-							/>
+							<div class="ed-grid s-grid-2 m-grid-3">
+								<div v-for="(product, i) in lists" :key="i">
+									<cards-prods :body="product" :i="i" :desc="product.desc" :name="product.name" :path="product.path" />
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
